@@ -6,8 +6,7 @@ import os
 
 app = Flask(__name__)
 
-
-def initialize_browser(proxy, user_agent):
+def initialize_browser(proxy=None, user_agent=None):
     co = ChromiumOptions()
     co.auto_port()
 
@@ -17,8 +16,6 @@ def initialize_browser(proxy, user_agent):
 
     if proxy:
         co.set_proxy(proxy)
-    else:
-        raise ValueError("Proxy未提供。")
 
     if user_agent:
         co.set_user_agent(user_agent=user_agent)
@@ -36,7 +33,6 @@ def initialize_browser(proxy, user_agent):
     browser = Chromium(addr_or_opts=co)
     tab = browser.latest_tab
     return browser, tab
-
 
 def get_cf_clearance(tab, url, max_retries=3):
     for attempt in range(1, max_retries + 1):
@@ -123,6 +119,29 @@ def fetch_cf_clearance():
         if browser:
             browser.quit()
 
+@app.route('/test_cf_clearance', methods=['GET'])
+def test_cf_clearance():
+    url = 'https://plus.aivvm.com/auth/login_share?token=fk-HgkLG4igEbqrkOmZFrC4LfXYVeqkiHqJYZwFQii_DfM'
+    user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0'
+    browser = None
+    try:
+        browser, tab = initialize_browser(user_agent=user_agent)
+        cf_clearance = get_cf_clearance(tab, url)
+
+        if cf_clearance:
+            response = {
+                "cf_clearance": cf_clearance
+            }
+            return jsonify(response), 200
+        else:
+            return jsonify({"error": "未能获取到 'cf_clearance'。"}), 500
+
+    except Exception as e:
+        return jsonify({"error": f"发生未预期的错误: {e}"}), 500
+
+    finally:
+        if browser:
+            browser.quit()
 
 @app.route('/', methods=['GET'])
 def test():
@@ -135,7 +154,7 @@ def test():
         try:
             # 发送请求到 api.ipify.org 获取公共IP
             ip_response = requests.get('https://api.ipify.org?format=json', timeout=5)
-            if ip_response.status_code == 200:
+            if (ip_response.status_code == 200):
                 public_ip = ip_response.json().get('ip')
                 response["public_ip"] = public_ip
             else:
@@ -144,7 +163,6 @@ def test():
             response["public_ip"] = f"无法获取IP: {e}"
 
     return jsonify(response), 200
-
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
