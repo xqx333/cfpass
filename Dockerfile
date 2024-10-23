@@ -32,7 +32,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Use the specific version you provided
-RUN wget -q "https://repo.debiancn.org/debiancn/pool/main/g/google-chrome-stable/google-chrome-stable_123.0.6312.105-1_amd64.deb" -O chrome.deb \
+RUN wget -q "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb" -O chrome.deb \
     && apt-get update \
     && apt-get install -y ./chrome.deb --no-install-recommends \
     && rm chrome.deb \
