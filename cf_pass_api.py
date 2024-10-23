@@ -40,9 +40,10 @@ def get_cf_clearance(tab, url, max_retries=3):
             tab.get(url)
 
             # 获取并操作元素
-            rXOa8_ele = tab.ele('#:rXOa8')
-            div_elements = rXOa8_ele.eles('tag:div')
-            if len(div_elements) < 2:
+            main_content = tab.ele('@class=main-content')
+            #rXOa8_ele = tab.ele('#:gLIfn4')
+            div_elements = main_content.eles('tag:div')
+            if len(div_elements) < 3:
                 raise Exception("未找到足够的div元素。")
 
             sr_ele = div_elements[1].shadow_root
