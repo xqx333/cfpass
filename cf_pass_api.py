@@ -46,7 +46,7 @@ def get_cf_clearance(tab, url, max_retries=3):
             if len(div_elements) < 3:
                 raise Exception("未找到足够的div元素。")
 
-            sr_ele = div_elements[1].shadow_root
+            sr_ele = div_elements[2].shadow_root
             iframe = sr_ele.get_frame(1)
             body = iframe.ele('tag:body').shadow_root
 
