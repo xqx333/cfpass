@@ -42,11 +42,12 @@ def get_cf_clearance(tab, url, max_retries=3):
             # 获取并操作元素
             main_content = tab.ele('@class=main-content')
             #rXOa8_ele = tab.ele('#:gLIfn4')
-            div_elements = main_content.eles('tag:div')
-            if len(div_elements) < 3:
+            div1_elements = main_content.ele('tag:div')
+            div2_elements = div1_elements.eles('tag:div')
+            if len(div2_elements) < 2:
                 raise Exception("未找到足够的div元素。")
 
-            sr_ele = div_elements[2].shadow_root
+            sr_ele = div2_elements[1].shadow_root
             iframe = sr_ele.get_frame(1)
             body = iframe.ele('tag:body').shadow_root
 
