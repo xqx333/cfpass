@@ -123,7 +123,7 @@ def fetch_cf_clearance():
 
 @app.route('/test_cf_clearance', methods=['GET'])
 def test_cf_clearance():
-    url = 'https://plus.aivvm.com/auth/login_share?token=fk-HgkLG4igEbqrkOmZFrC4LfXYVeqkiHqJYZwFQii_DfM'
+    url = 'https://zhile.io/'
     user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0'
     browser = None
     try:
