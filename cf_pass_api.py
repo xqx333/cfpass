@@ -20,11 +20,11 @@ def initialize_browser(proxy=None, user_agent=None):
 
     if user_agent:
         co.set_user_agent(user_agent=user_agent)
-   # else:
+    else:
         # 默认的User-Agent，如果未提供
-       # co.set_user_agent(user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
-                                     #'AppleWebKit/537.36 (KHTML, like Gecko) '
-                                     #'Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0')
+        co.set_user_agent(user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+                                     'AppleWebKit/537.36 (KHTML, like Gecko) '
+                                     'Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0')
 
     co.set_argument('--headless=new')
     co.set_argument('--no-sandbox')
@@ -138,10 +138,10 @@ def fetch_cf_clearance():
 @app.route('/test_cf_clearance', methods=['GET'])
 def test_cf_clearance():
     url = 'https://www.v2ex.com/'
-   # user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0'
+    user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0'
     browser = None
     try:
-        browser, tab = initialize_browser(user_agent=None)
+        browser, tab = initialize_browser(user_agent=user_agent)
         cf_clearance = get_cf_clearance(tab, url)
 
         if cf_clearance:
