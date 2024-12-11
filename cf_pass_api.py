@@ -3,6 +3,7 @@ import requests
 from DrissionPage import Chromium, ChromiumOptions
 import time
 import os
+import platform
 
 app = Flask(__name__)
 
@@ -25,11 +26,24 @@ def initialize_browser(proxy=None, user_agent=None):
                                      'AppleWebKit/537.36 (KHTML, like Gecko) '
                                      'Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0')
 
-    co.headless(True)
+    co.set_argument('--headless=new')
     co.set_argument('--no-sandbox')
-    co.set_argument('--window-size=800,600')
+    co.set_argument('--window-size=1920,1080')
     co.incognito(on_off=True)
-
+    co.set_argument('--disable-search-engine-choice-screen')
+    co.set_argument('--disable-setuid-sandbox')
+    co.set_argument('--no-zygote')
+    co.set_argument('--ignore-certificate-errors')
+    co.set_argument('--ignore-ssl-errors')
+    co.set_argument('--use-gl=swiftshader')
+    co.set_argument('-no-first-run')
+    co.set_argument('-no-default-browser-check')
+    co.set_argument('-disable-background-mode')
+    co.set_argument('-disable-gpu')
+    IS_ARMARCH = platform.machine().startswith(('arm', 'aarch')) 
+    if IS_ARMARCH:
+        co.set_argument('--disable-gpu-sandbox') 
+        co.set_argument('--disable-software-rasterizer') 
     browser = Chromium(addr_or_opts=co)
     tab = browser.latest_tab
     return browser, tab
@@ -123,7 +137,7 @@ def fetch_cf_clearance():
 
 @app.route('/test_cf_clearance', methods=['GET'])
 def test_cf_clearance():
-    url = 'https://zhile.io/'
+    url = 'https://zhile.io'
     user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0'
     browser = None
     try:
