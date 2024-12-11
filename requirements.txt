@@ -1,4 +1,4 @@
 Flask
 requests
-DrissionPage==4.1.0.9
+DrissionPage
 gunicorn
