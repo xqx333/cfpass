@@ -50,8 +50,6 @@ def get_cf_clearance(tab, url, max_retries=3):
     for attempt in range(1, max_retries + 1):
         try:
             tab.get(url)
-            time.sleep(5)
-
             # 获取并操作元素
             main_content = tab.ele('@class=main-content')
             #rXOa8_ele = tab.ele('#:gLIfn4')
@@ -136,7 +134,7 @@ def fetch_cf_clearance():
 
 @app.route('/test_cf_clearance', methods=['GET'])
 def test_cf_clearance():
-    url = 'https://nopecha.com/demo/cloudflare'
+    url = 'https://zhile.io'
     user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
     browser = None
     try:
