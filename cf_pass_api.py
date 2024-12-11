@@ -6,8 +6,9 @@ import os
 import platform
 
 app = Flask(__name__)
+user_agent_default = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
 
-def initialize_browser(proxy=None, user_agent=None):
+def initialize_browser(proxy=None, user_agent=user_agent_default):
     co = ChromiumOptions()
     co.auto_port()
 
@@ -18,11 +19,7 @@ def initialize_browser(proxy=None, user_agent=None):
     if proxy:
         co.set_proxy(proxy)
 
-    if user_agent:
-        co.set_user_agent(user_agent=user_agent)
-    else:
-        # 默认的User-Agent，如果未提供
-        co.set_user_agent(user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36')
+    co.set_user_agent(user_agent=user_agent)
 
     co.set_argument('--headless=new')
     co.set_argument('--no-sandbox')
@@ -107,6 +104,8 @@ def fetch_cf_clearance():
 
     if not url:
         return jsonify({"error": "缺少 'url' 参数。"}), 400
+    if not user_agent:
+        user_agent = user_agent_default
     browser = None
     try:
         browser, tab = initialize_browser(proxy=proxy, user_agent=user_agent)
@@ -135,7 +134,7 @@ def fetch_cf_clearance():
 @app.route('/test_cf_clearance', methods=['GET'])
 def test_cf_clearance():
     url = 'https://zhile.io'
-    user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
+    user_agent = user_agent_default
     browser = None
     try:
         browser, tab = initialize_browser(user_agent=user_agent)
